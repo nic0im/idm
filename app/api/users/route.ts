@@ -1,5 +1,13 @@
+
+import {connectDB} from "../../db/mongoose"
+
+import Usuario from "../../db/models/userSchema"
+
 export async function GET(request: Request){
-    return new Response('test')
+await connectDB()
+const users = await Usuario.find()
+console.log(users)
+return new Response("test")
 }
 
 export async function POST(req: Request){

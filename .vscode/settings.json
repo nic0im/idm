@@ -5,8 +5,17 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true
+        "**/Thumbs.db": true,
+        ".next/types": true,
+        ".next": true,
+        ".vscode": true,
+        "node_modules": true
     },
-    "hide-files.files": [],
+    "hide-files.files": [
+        ".next/types",
+        ".next",
+        ".vscode",
+        "node_modules"
+    ],
     "typescript.tsdk": "node_modules\\typescript\\lib"
 }

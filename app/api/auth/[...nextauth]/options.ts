@@ -2,6 +2,8 @@ import type { NextAuthOptions } from "next-auth";
 
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider  from "next-auth/providers/credentials";
+import Usuario from "../../../db/models/userSchema";
+import {connectDB} from "../../../db/mongoose";
 
 export const options: NextAuthOptions = {
 
@@ -36,5 +38,26 @@ export const options: NextAuthOptions = {
 
         }
       })
-    ]
+    ],
+    callbacks: {
+        async session({ session, token, user }) {
+        
+            await connectDB()
+
+            const usuario = await Usuario.find({nombre: `${session.user.name}`})
+
+            if (usuario.length == 0) {
+                console.log("checkpoint")
+                const nuevoUsuario = new Usuario({
+                    nombre: session.user.name,
+                    foto: session.user.image,
+                    email: session.user.email
+                })
+                await nuevoUsuario.save()
+            }
+            
+          
+          return session
+        }
+      }
 }

@@ -5,12 +5,12 @@ export default function LeaderBoard() {
   const sampleUsers = [{nombre: "Juan"}, {nombre: "Maria"}, {nombre: "Nicolas"}, {nombre:"Lucas"}, {nombre:"Don Nelson"}]
   
   return (
-    <div className='bg-white/60 w-full h-[500px] text-black text-center py-4 border border-black shadow-md'>
+    <div className='bg-white/60 w-[300px] h-[310px] text-black text-center py-2 border border-black shadow-md justify-center flex flex-col items-center bg-gray-100'>
       <p className='font-bold text-2xl'>
-        Top colaboradores
+        Top usuarios
       </p>
       {
-        sampleUsers.map(u => <div className=' flex border-2 border-gray-600 rounded-md h-[60px] mt-5 mx-2'>
+        sampleUsers.map(u => <div className=' flex border-2 border-gray-600 rounded-md h-[40px] mt-2 mx-2 w-[250px]'>
           <div className='w-[60px]  h-[full] bg-white/50'>
 
           </div>

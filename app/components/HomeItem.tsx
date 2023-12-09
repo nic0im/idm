@@ -12,16 +12,16 @@ interface inputHomeItem {
 export default function HomeItem ({imgSrc , tittle, desc, href}: inputHomeItem) {
 
     return (
-    <Link href={href} className="flex justify-center">
-    <div className="overflow-hidden w-3/6 h-[250px] flex bg-white/80 rounded cursor-pointer hover:shadow-2xl hover:shadow-green-750  hover:bg-green-300/90">
-          <div className=" w-1/3 border-r border-black">
+    <Link href={href} className="flex justify-center text-white">
+    <div className="overflow-hidden w-[300px] h-[400px] flex flex-col bg-green-700/90 rounded cursor-pointer hover:shadow-2xl hover:shadow-green-750  hover:bg-green-700/100">
+          <div className=" border-black h-[250px]">
             <img src={imgSrc} className="w-full h-full"/>
           </div>
-          <div className="w-2/3 justify-center">
+          <div className=" justify-center">
             <div className="flex justify-center py-8 font-semibold text-2xl h-2/6">
             {tittle}
             </div>
-            <div className="px-8 mt-4 h-2/6 text-lg text-center">
+            <div className=" mt-3 text-lg text-center px-3">
             {desc}
             
             </div>
