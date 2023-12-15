@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import HeaderNav from "../svg/HeaderNav";
 import { useState } from "react";
@@ -6,23 +7,35 @@ import { signOut } from "next-auth/react"
 import Link from "next/link";
 import { useEffect } from "react";
 import Grapes from "../../public/Grapes";
+import SvgBell from "../svg/SvgBell";
+import SvgBack from "../svg/SvgBack";
+import NotificationsMenu from "./NotificationsMenu";
+
+
 export default function Header({ Session: Session }) {
+
+
 
   const [session, setSession] = useState(Session);
   const [showMenu, setShowMenu] = useState(false);
-
+  const [showNotifications, setShowNotifications] = useState(false)
 
   return (
     <div className="h-[100px] bg-green-700/90 shadow-sm text-white w-screen flex items-center text-6xl font-lightbold justify-between px-[100px] relative">
-      <div>
-        <HeaderNav />
-      </div>
+      <SvgBack />
       <Link className="flex gap-2 items-center" href={process.env.NEXT_PUBLIC_APP_URL}>
         <Grapes/>
         <h1>Isla de maipo</h1>
       </Link>
 
-      {session ? (<>
+      {session ? (<div className=" flex justify-center items-center gap-2">
+        <div className="h-[40px] w-[40px] flex bg-black/30 rounded relative">
+        <button onClick={()=>{setShowNotifications(!showNotifications)}} className="relative">
+          <SvgBell/>
+          
+        </button>
+        {showNotifications ? (<NotificationsMenu/>) :(<></>)}
+        </div>
         <button className=" h-[40px] gap-5 text-xl flex justify-between pl-2 items-center bg-black/50 border border-gray-300/10 shadow-sm  relative" onClick={()=>{setShowMenu(!showMenu)}}>
           <div>{session?.user?.name}</div>
           <div className=" w-[40px] h-[40px] overflow-hidden">
@@ -43,7 +56,7 @@ export default function Header({ Session: Session }) {
         </div>):(<></>)}
         </button>
         
-        </>
+        </div>
       ) : (
         <Link
           className="text-2xl border border-white p-2 rounded"

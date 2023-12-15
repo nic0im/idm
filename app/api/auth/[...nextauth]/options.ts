@@ -45,9 +45,8 @@ export const options: NextAuthOptions = {
             await connectDB()
 
             const usuario = await Usuario.find({nombre: `${session.user.name}`})
-
+            console.log(usuario)
             if (usuario.length == 0) {
-                console.log("checkpoint")
                 const nuevoUsuario = new Usuario({
                     nombre: session.user.name,
                     foto: session.user.image,
@@ -55,8 +54,7 @@ export const options: NextAuthOptions = {
                 })
                 await nuevoUsuario.save()
             }
-            
-          
+            await Usuario.findByIdAndUpdate({_id: usuario[0]._id.toString()},{lastSeen: new Date()})
           return session
         }
       }

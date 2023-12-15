@@ -1,13 +1,29 @@
 
 import {connectDB} from "../../db/mongoose"
+import {getUserbyName} from "../controllers/usuario";
 
 import Usuario from "../../db/models/userSchema"
 
-export async function GET(request: Request){
-await connectDB()
-const users = await Usuario.find()
-console.log(users)
-return new Response("test")
+type user = {
+    
+_id: String,
+nombre: String,
+foto: String,
+email:String,
+createdAt: String,
+updatedAt: String
+
+}
+
+export async function GET(req: Request): Promise<Response>{
+  const params = new URLSearchParams(req.url.split('?')[1]);
+  const username = params.get('user')
+
+  const user = await getUserbyName(username)
+  console.log(user)
+  return new Response(JSON.stringify(user), {
+    headers: { 'Content-Type': 'application/json' },
+  });
 }
 
 export async function POST(req: Request){

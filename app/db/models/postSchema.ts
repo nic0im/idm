@@ -6,7 +6,9 @@ const postSchema = new Schema({
   thumbnail: {type: String},
   descripcion: {type: String},
   autor:{type: String},
-  categoria: {type: String}
+  categoria: {type: String},
+  comentarios: {type: Array},
+  foto:{type:String}
 },{ timestamps: true });
 
 

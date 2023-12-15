@@ -5,7 +5,10 @@ const userSchema = new Schema({
   nombre: {type: String},
   foto: {type: String},
   email: {type: String},
-  amigos:{type: Array}
+  amigos:{type: Array},
+  lastSeen: { type: Date },
+  totalPosts: {type: Number},
+  solicitudes: {type: Array}
 },{ timestamps: true });
 
 
