@@ -5,6 +5,9 @@ import CredentialsProvider  from "next-auth/providers/credentials";
 import Usuario from "../../../db/models/userSchema";
 import {connectDB} from "../../../db/mongoose";
 
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import clientPromise from "./mongodb"
+
 export const options: NextAuthOptions = {
 
     providers: [
@@ -39,23 +42,47 @@ export const options: NextAuthOptions = {
         }
       })
     ],
-    callbacks: {
-        async session({ session, token, user }) {
-        
-            await connectDB()
 
-            const usuario = await Usuario.find({nombre: `${session.user.name}`})
-            console.log(usuario)
-            if (usuario.length == 0) {
-                const nuevoUsuario = new Usuario({
-                    nombre: session.user.name,
-                    foto: session.user.image,
-                    email: session.user.email
-                })
-                await nuevoUsuario.save()
+    adapter: MongoDBAdapter(clientPromise),
+    
+      callbacks: {
+        async session({ session, token, user }) {
+          await connectDB();
+      
+          try{
+            const usuario = await Usuario.find({ nombre: session.user.name });
+
+            if (usuario.length === 0) {
+              const nuevoUsuario = new Usuario({
+                nombre: session.user.name,
+                foto: session.user.image,
+                email: session.user.email,
+              });
+              await nuevoUsuario.save();
+            } else {
+              try {
+                const updatedUser = await Usuario.findByIdAndUpdate(
+                  { _id: usuario[0]._id.toString() },
+                  { lastSeen: new Date() },
+                  { new: true } // Ensure that the updated document is returned
+                )
+
+                //session.user._id = updatedUser._id.toString()
+
+              } catch (error) {
+                console.error('Error updating user:', error);
+              }
             }
-            await Usuario.findByIdAndUpdate({_id: usuario[0]._id.toString()},{lastSeen: new Date()})
-          return session
-        }
+
+            
+
+          }catch(err){console.log(err)}
+          
+      
+         
+          
+          console.log("session??? ", session, token )
+          return session;
+        },
       }
 }

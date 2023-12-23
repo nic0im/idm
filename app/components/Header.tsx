@@ -20,6 +20,7 @@ export default function Header({ Session: Session }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false)
 
+
   return (
     <div className="h-[100px] bg-green-700/90 shadow-sm text-white w-screen flex items-center text-6xl font-lightbold justify-between px-[100px] relative">
       <SvgBack />
@@ -34,7 +35,7 @@ export default function Header({ Session: Session }) {
           <SvgBell/>
           
         </button>
-        {showNotifications ? (<NotificationsMenu/>) :(<></>)}
+        {showNotifications ? (<NotificationsMenu user={session.user.name}/>) :(<></>)}
         </div>
         <button className=" h-[40px] gap-5 text-xl flex justify-between pl-2 items-center bg-black/50 border border-gray-300/10 shadow-sm  relative" onClick={()=>{setShowMenu(!showMenu)}}>
           <div>{session?.user?.name}</div>

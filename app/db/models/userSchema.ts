@@ -8,7 +8,9 @@ const userSchema = new Schema({
   amigos:{type: Array},
   lastSeen: { type: Date },
   totalPosts: {type: Number},
-  solicitudes: {type: Array}
+  solicitudes: {type: Array},
+  comentarios:[{ type: Schema.Types.ObjectId, ref: 'Comentario' }],
+  notificaciones:{type: Array}
 },{ timestamps: true });
 
 

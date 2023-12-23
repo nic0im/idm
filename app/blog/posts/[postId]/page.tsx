@@ -1,5 +1,6 @@
 import { comentarPost, getSinglePost } from "../../../api/controllers/post";
 import SingleComment from "../../../components/SingleComment";
+import { getServerSession } from "next-auth"
 
 type Params = {
   params: {
@@ -8,14 +9,15 @@ type Params = {
 };
 
 export default async function Post({ params: { postId } }: Params) {
-  
+
+  const session = await getServerSession()
   const post = await getSinglePost(postId)
-  console.log(post)
+
   const comentar = async(formData: FormData) => {
     "use server"
     const comentario = formData.get("comentario")
     try {
-      const comentarionuevo = await comentarPost(postId, comentario, post.autor)
+      const comentarionuevo = await comentarPost(postId, comentario, session.user.name)
     }catch(err){
       console.log(err)
     }
@@ -45,7 +47,6 @@ export default async function Post({ params: { postId } }: Params) {
                     </form>
                     <div className="flex flex-col gap-3">
                       {post.comentarios.map((c)=>{
-                        console.log(c)
                         return(<SingleComment c={c}/>)
                       })}
                       

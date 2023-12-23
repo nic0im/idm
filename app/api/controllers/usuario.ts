@@ -6,8 +6,8 @@ export async function getUserbyName(username){
     
     try {
         //await connectDB()
-        const user = await Usuario.find({nombre: username})
-        return user[0]
+        const user = await Usuario.findOne({nombre: username})
+        return user
 
     } catch(err) {
         console.log(err)

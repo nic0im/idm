@@ -19,7 +19,6 @@ export async function crearPost(body:Body) {
 
     try {
 
-        console.log(autor)
         var res = await nuevoPost.save()
         const totalPost = await Post.countDocuments({ autor: autor });
         await Usuario.findOneAndUpdate({nombre: autor},{totalPosts: totalPost})
