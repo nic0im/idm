@@ -6,11 +6,10 @@ import { useState } from "react";
 import { signOut } from "next-auth/react"
 import Link from "next/link";
 import { useEffect } from "react";
-import Grapes from "../../public/Grapes";
 import SvgBell from "../svg/SvgBell";
 import SvgBack from "../svg/SvgBack";
 import NotificationsMenu from "./NotificationsMenu";
-
+import SvgGrapes from "../svg/SvgGrapes";
 
 export default function Header({ Session: Session }) {
 
@@ -22,11 +21,11 @@ export default function Header({ Session: Session }) {
 
 
   return (
-    <div className="h-[100px] bg-green-700/90 shadow-sm text-white w-screen flex items-center text-6xl font-lightbold justify-between px-[100px] relative">
+    <div className="h-[80px] bg-gray-200 shadow-sm text-gray-600 w-screen flex items-center text-6xl font-lightbold justify-between px-[100px] relative">
       <SvgBack />
       <Link className="flex gap-2 items-center" href={process.env.NEXT_PUBLIC_APP_URL}>
-        <Grapes/>
-        <h1>Isla de maipo</h1>
+        <SvgGrapes color="#79c142" height="60px" width="60px"/>
+        <h1 className=" font-medium">IDMP</h1>
       </Link>
 
       {session ? (<div className=" flex justify-center items-center gap-2">

@@ -2,7 +2,7 @@
 import {connectDB} from "../../db/mongoose"
 
 import {getUserbyName} from "../controllers/usuario";
-import { addFriend, sendFriendRequest, deleteFriendRequest, deleteFriend } from "../controllers/helpers";
+import { addFriend, sendFriendRequest, deleteFriendRequest, deleteFriend, getRelationFromUsers } from "../controllers/helpers";
 
 import Usuario from "../../db/models/userSchema"
 
@@ -27,12 +27,12 @@ export async function GET(req: Request): Promise<Response>{
 
   const params = new URLSearchParams(req.url.split('?')[1]);
 
-  console.log(params)
 
   const notifications = params.get('notifications')
   const friendRequest = params.get('friendRequest')
   const getSingle = params.get('getSingle')
   const cancelFriendRequest = params.get('cancelFriendRequest')
+  const relation = params.get('relation')
   
 
   if(notifications=="1") {
@@ -85,7 +85,19 @@ export async function GET(req: Request): Promise<Response>{
        
        } catch(err){console.log(err)}
        return new Response("Error")
-  }
+
+  }else if(relation=="1"){
+
+      const from = params.get('from')
+      const to = params.get('to')
+    
+    try {
+
+     const res = await getRelationFromUsers(from, to)
+      return new Response(JSON.stringify(res))
+    } catch (err) {console.log(err)}
+      return new Response("Error")
+   }
 
   return
 }

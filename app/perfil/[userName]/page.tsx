@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth"
 import LeaderBoard from "../../components/LeaderBoard"
 import Profile from "../../components/profileComponents/Profile"
 import UserWall from "../../components/profileComponents/UserWall"
+import { getProfileInfoByName } from "../../api/controllers/helpers"
+import { getCommentsById } from "../../api/controllers/comentarios"
 
 type Params = {
   params: {
@@ -14,36 +16,15 @@ type Params = {
  
 export default async function Page({params: {userName}}: Params) {
 
-  const session = await getServerSession()
+const session = await getServerSession()
+
+ //conseguir el usuario logeado
+ const loggedUser = await getUserbyName(session?.user?.name)
+
 
  //conseguir el usuario entero de la pagina segun el nombre del param-
   const userDecoded = decodeURIComponent(userName)
-  const user = await getUserbyName(userDecoded)
-
-  const { nombre , foto , lastSeen , totalPosts , comentarios, solicitudes, amigos } = user
-
-  const areFriends = amigos.includes(session?.user)
-
-
-  console.log("session id", session)
-  //const alreadySentFriendRequest = solicitudes.includes(localStorage.getItem('idUserFromSession'))
-  
-  const currentUser = { nombre , foto ,lastSeen, totalPosts, comentarios, areFriends}
-
-
-  //console.log(currentUser)
-
-  //amigos
-  //solicitudes
-
-  const currentUserId = user?._id
-  const currentUserComments = user?.comentarios
-
-  //conseguir el usuario logeado
-  const loggedUser = await getUserbyName(session?.user?.name)
-
-
-  
+  const user = await getProfileInfoByName(userDecoded)
 
 
   return(
@@ -57,18 +38,18 @@ export default async function Page({params: {userName}}: Params) {
       <LeaderBoard/>
       </div>
       <div className="mt-4  w-[1100px] h-[40px] flex gap-10 items-center justify-start bg-green-800/80 text-white">
-        <button className=" hover:bg-white h-full w-full hover:text-black" >
+        <button className=" hover:bg-white h-full w-full hover:text-black transition-all" >
           Comentarios
         </button>
-        <button className=" hover:bg-white h-full w-full hover:text-black">
+        <button className=" hover:bg-white h-full w-full hover:text-black transition-all">
           Publicaciones
         </button>
-        <button className=" hover:bg-white h-full w-full hover:text-black">
+        <button className=" hover:bg-white h-full w-full hover:text-black transition-all">
           Insignias
         </button>
 
       </div>
-      <UserWall idReceptor={currentUserId.toString()} comentarios={currentUserComments}/>
+      <UserWall idReceptor={user?._id.toString()} loggedUserId={loggedUser?._id.toString()} currentUsername={user?.nombre} />
     
     </div>
   )

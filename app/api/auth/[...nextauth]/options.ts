@@ -8,6 +8,8 @@ import {connectDB} from "../../../db/mongoose";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "./mongodb"
 
+import { Adapter } from "next-auth/adapters";
+
 export const options: NextAuthOptions = {
 
     providers: [
@@ -43,10 +45,10 @@ export const options: NextAuthOptions = {
       })
     ],
 
-    adapter: MongoDBAdapter(clientPromise),
+    //adapter: MongoDBAdapter(clientPromise) as Adapter,
     
       callbacks: {
-        async session({ session, token, user }) {
+        async session({ session, user, token }) {
           await connectDB();
       
           try{
@@ -67,7 +69,7 @@ export const options: NextAuthOptions = {
                   { new: true } // Ensure that the updated document is returned
                 )
 
-                //session.user._id = updatedUser._id.toString()
+                token._id = updatedUser._id.toString()
 
               } catch (error) {
                 console.error('Error updating user:', error);
@@ -77,12 +79,10 @@ export const options: NextAuthOptions = {
             
 
           }catch(err){console.log(err)}
+
+          //console.log(token)
           
-      
-         
-          
-          console.log("session??? ", session, token )
           return session;
-        },
+        }
       }
 }

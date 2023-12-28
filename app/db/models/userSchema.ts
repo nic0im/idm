@@ -9,8 +9,8 @@ const userSchema = new Schema({
   lastSeen: { type: Date },
   totalPosts: {type: Number},
   solicitudes: {type: Array},
-  comentarios:[{ type: Schema.Types.ObjectId, ref: 'Comentario' }],
-  notificaciones:{type: Array}
+  notificaciones:{type: Array},
+  uvas:{type: Number}
 },{ timestamps: true });
 
 
