@@ -15,3 +15,13 @@ export async function getUserbyName(username){
     
     return
 }
+
+export async function getUserIdByName(name){
+    try {
+        const user = await Usuario.findOne({nombre:name})
+        const {_id} = user
+        const idfinal = _id.toString()
+        return idfinal
+    }catch(err){console.log(err)
+        return}
+}

@@ -10,10 +10,6 @@ export default function Profile({ user, userLogged }) {
 
 const [currentUser, setCurrentUser] = useState(JSON.parse(user))
 const [relations, setRelations] = useState({alreadySent:false, areFriends:false})
-const [buttonPressed, setButtonPressed] = useState(false);
-
-console.log(currentUser)
-
 
 
   // Dates from user profile
@@ -75,12 +71,6 @@ console.log(currentUser)
     }
   };
 
-  const handleRemoveFriend = () => {
-    // if()
-     console.log(
-       `El usuario ${userFromSession.nombre} cancela amistad a ${currentUser?.nombre}`
-     ); 
-   };
 
    const handleCancelFriendRequest = async () => {
     setRelations({alreadySent:false, areFriends:false});
@@ -89,7 +79,7 @@ console.log(currentUser)
         .then( res => { const newCurrentUser = { ...currentUser };
 
           // Encuentra la posición del ID a eliminar en el array solicitudes
-          const indexToDelete = newCurrentUser.solicitudes.indexOf(res.data);
+          const indexToDelete = newCurrentUser.solicitudes.indexOf(res.data._id);
       
           // Verifica si el ID está presente en el array antes de intentar eliminarlo
           if (indexToDelete !== -1) {
@@ -142,8 +132,8 @@ console.log(currentUser)
     
 
   return currentUser ? (
-  <div className="flex flex-col w-[800px] bg-white/60 gap-5 shadow-lg">
-        <div className=" w-full py-2 font-semibold bg-green-700/30">
+  <div className="flex flex-col w-[800px] gap-5 shadow-lg rounded-md overflow-hidden bg-gray-100">
+        <div className=" w-full py-2 bg-gray-900/10 text-xl font-semibold">
           {currentUser.nombre}
         </div>
     <div className="flex align-middle items-center gap-5 px-10 pt-2">

@@ -1,20 +1,32 @@
 
 import HomeItem from "./components/HomeItem"
-
+import { getPosts} from "./api/controllers/post";
+import SinglePost from "./components/SinglePost";
+import Link from "next/link";
 
 
 export default async function Home() {
+  const posts = await getPosts()
 
   return (
-    <div className="w-full h-[700px] bg-cover bg-center  bg-black" style={{ backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/d/db/Entrada_a_comuna_Isla_de_Maipo_Región_Metropolitana_Chile.JPG)'}}>
-    <div className='h-full w-full bg-black/30 backdrop-blur-sm flex flex-col gap-[60px]'>
-      <div className='gap-[80px] flex my-20 justify-center'>
-        <HomeItem tittle={"Tiendas Online"} desc={"Explora una variedad de tiendas en Isla de Maipo."} imgSrc="https://i.ibb.co/hRdZHYP/ca7f1b0a4d5fe34a7e459cdbc174bef0.jpg" href={`/negocios`}/>
-        <HomeItem tittle={"Blog Isla de maipo"} desc={"Explora sitios de interes en Isla de Maipo."} imgSrc="https://i.ibb.co/hRdZHYP/ca7f1b0a4d5fe34a7e459cdbc174bef0.jpg" href={`/blog`}/>
-      </div>
-      
-
+  <div className="bg-gray-300 h-full">
+  <div className="h-full text-center">
+    <div className="pt-10 pb-5 text-2xl text-gray-600 flex justify-center gap-8">
+        <div className=" font-sans font-semibold">
+        Mostrando las ultimas publicaciones creadas por la comunidad!
+        </div>
+    </div>
+    <div className="flex justify-center pb-10">
+    <div className="grid grid-cols-4 justify-center gap-6">
+    {posts.map((p)=>{
+        const fecha = p.createdAt
+        const fechaFormateada = new Date(fecha)
+        const fechaString = `${fechaFormateada.getDate()}/${fechaFormateada.getMonth()+1}/${fechaFormateada.getFullYear()}`
+        const thumbnail = p.thumbnail
+        return (<SinglePost titulo={p.titulo} autor={p.autor} fecha={fechaString} thumbnail={thumbnail} pid={p._id} />)})}
     </div>
     </div>
+  </div>
+  </div>
   )
 }

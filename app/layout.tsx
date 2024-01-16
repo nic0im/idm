@@ -4,6 +4,7 @@
     import {getServerSession} from "next-auth/next"
     import Header from "./components/Header"
     import Footer from './components/Footer'
+import AdminTools from './components/adminComponents/AdminTools'
 
 
     const inter = Inter({ subsets: ['latin'] })
@@ -20,12 +21,12 @@
       return (
         
         <html lang="en">
-          <body className={`${inter.className} w-full h-full overflow-y-scroll overflow-x-hidden`}>
+          <body className={`${inter.className} w-full h-full overflow-y-scroll overflow-x-hidden bg-gray-300`}>
           <Header Session={session} />
           <>
           {props.children}
           </>
-          <div className='z-10'>
+          <div className='z-3'>
           <Footer/>
           </div>
           </body>

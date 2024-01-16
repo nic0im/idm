@@ -28,16 +28,17 @@ const session = await getServerSession()
 
 
   return(
-    <div className=" text-center flex justify-center flex-col items-center bg-gradient-to-b from-lime-200 to-lime-300">
-      <div className=" w-full py-2 bg-green-100 mt-4 bg-green-700/40 text-xl">
-      Perfil de {userDecoded}
+    <div className=" text-center flex justify-center flex-col items-center ">
+      <div className=" w-[1150px] py-2 mt-4 text-xl text-white relative overflow-hidden">
+      <img src="/Captura2.PNG" className=" rounded-md shadow-md" />
+      <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 z-6 flex w-full h-[200px] items-center justify-center bg-black/40 rounded-md font-thin text-7xl">{userDecoded}</div>
       </div>
       <div className="flex justify-center gap-5 mt-3">
       
       <Profile user={JSON.stringify(user)} userLogged={JSON.stringify(loggedUser)}/>
       <LeaderBoard/>
       </div>
-      <div className="mt-4  w-[1100px] h-[40px] flex gap-10 items-center justify-start bg-green-800/80 text-white">
+      <div className="mt-4  w-[1100px] h-[40px] flex gap-10 items-center justify-start text-black bg-black/10">
         <button className=" hover:bg-white h-full w-full hover:text-black transition-all" >
           Comentarios
         </button>

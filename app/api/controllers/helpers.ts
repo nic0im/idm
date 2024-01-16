@@ -1,7 +1,5 @@
 import Usuario from "../../db/models/userSchema"
-
-
-import { getUserbyName } from "./usuario"
+import Post from "../../db/models/postSchema"
 
 export const sendFriendRequest = async (from, to) => {
 
@@ -12,9 +10,18 @@ export const sendFriendRequest = async (from, to) => {
    
 
     try {
+
+        const {nombre, foto, _id} = await Usuario.findById({_id:from})
+
+        const date = Date.now()
+
+        const id = _id.toString()
+        const solicitud = {nombre, foto, id, date}
+
+        console.log(solicitud)
         const receptor = await Usuario.findByIdAndUpdate(
             { _id: to },
-            { $push: { solicitudes: from } },
+            { $push: { solicitudes: solicitud} },
             { new: true } // This option returns the modified document instead of the original
           )
         return receptor._id
@@ -35,18 +42,21 @@ export const getProfilePicByName = async (username) => {
 
 
 
-export const addFriend = async (username1, username2) =>{
-
-    //add delete from request friends after accepting the friend request
+export const addFriend = async (from, to) =>{
 
     try {
-        await Usuario.findOneAndUpdate({ nombre: username1 }, {$push: {amigos: username2}},{new:true})
-        await Usuario.findOneAndUpdate({ nombre: username2 }, {$push: {amigos: username1}},{new:true})
-        console.log("controllers/hellpers: usuario agregados como amigos")
+
+    const user1 = await getProfileInfoById(from)
+    const user2 = await getProfileInfoById(to)
+
+    const userFrom = await Usuario.findByIdAndUpdate(from, {$push: {amigos: user2},$pull:{solicitudes:{id: to}}},{new:true})
+    const userTo = await Usuario.findByIdAndUpdate(to, {$push: {amigos: user1},$pull:{solicitudes:{id:from}}},{new:true})   
+
+    return [userFrom, userTo]
     } catch (err) {
-        console.log(err) 
+        console.log(err)
+        return 
     }
-    return
 }
 
 /*
@@ -59,12 +69,9 @@ const addNotifications = async (toUserId, fromUserId)=>{
 
 export const deleteFriendRequest = async (from, to) => {
 
-    console.log(`Borrando solicitud de${from} hacia ${to}`)
     try {
 
-    const {notificaciones} = await Usuario.findByIdAndUpdate({_id:to}, {$pull:{solicitudes: from}},{new:true})
-    
-    const res = notificaciones.includes(from)
+    const user = await Usuario.findByIdAndUpdate({_id:to}, {$pull:{solicitudes: {id: from}}},{new:true})
     return from
 
     } catch(err) {
@@ -83,9 +90,6 @@ export const deleteFriend = async (from, to) => {
     return
 }
 
-export const notificarFriendRequest = (from, to) => {
-
-}
 
 // export const borrarComentarios = async (from) => {
 
@@ -129,7 +133,7 @@ export const getRelationFromUsers = async (from, to) => {
 
         if(amigos.includes(from)){
             areFriends = true;
-        } else if(solicitudes.includes(from)){
+        } else if(solicitudes.some(obj => obj.id == from)){
             alreadySent = true;
         }
 
@@ -192,3 +196,63 @@ export const getTopUsers = async() => {
 // }
 
 // createUser()
+
+
+export const getUserSolicitudes = async (userId) => {
+
+    try {
+
+    const user = await Usuario.findByIdAndUpdate({_id: userId})
+    const {solicitudes} = user
+    return solicitudes
+    
+    } catch (err) {
+        console.log(err)
+    return}
+
+}
+
+
+export const getFriendsByName = async (name) => {
+
+    try{
+
+    const wholeUser = await Usuario.findOne({nombre: name})
+
+    const {amigos} = wholeUser
+
+    return amigos 
+
+    }catch(err){console.log(err); return}
+
+}
+
+export const getProfileInfoById = async (id) => {
+
+
+    try { 
+
+        const usuario = await Usuario.findById({_id:id})
+        
+        const {nombre, foto, createdAt, lastSeen, _id, totalPosts, amigos} = usuario
+        const infoUser = { _id, nombre, foto, createdAt, lastSeen, totalPosts, amigos:amigos.length}
+        return infoUser
+
+    }catch(err){return null}
+
+}
+
+
+export const getPostDestacados = async() => {
+
+    try {
+
+    const posts = await Post.find().limit(5)
+
+    return posts
+
+    }catch(err){
+        console.log(err)
+    return
+}
+}

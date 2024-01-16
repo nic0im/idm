@@ -18,7 +18,7 @@ export default async function WallComment({c,session, currentUserName}){
             <span></span>
           </div>
           <div className="flex gap-1">
-            <div className=" bg-black/10 break-normal min-h-[30px] max-w-[700px] rounded-md shadow-md w-full p-1 px-4 text-start font-sans">
+            <div className=" bg-gray-200 break-normal min-h-[30px] max-w-[700px] rounded-md shadow-md w-full p-1 px-4 text-start font-sans">
             {c.comentario}
             </div>
             <div className="flex flex-col justify-center">

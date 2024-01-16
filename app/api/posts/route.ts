@@ -15,5 +15,5 @@ export async function POST(req: Request){
 }
 
 export async function DELETE(req: Request) {
-    
+    const params = new URLSearchParams(req.url.split('?')[1])
 }
